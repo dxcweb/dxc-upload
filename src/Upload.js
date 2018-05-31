@@ -65,6 +65,12 @@ class Upload extends Component {
   //过滤
   filter(file) {
     const { accept, onError } = this.props;
+    if (!accept || accept === "") {
+      return true;
+    }
+    if (!file.type || file.type === "") {
+      return false;
+    }
     const index = accept.indexOf(file.type);
     if (index < 0) {
       return false;
@@ -140,13 +146,14 @@ class Upload extends Component {
       accept,
       onError,
       onChange,
+      multiple,
       ...other
     } = this.props;
     return (
       <div {...other} onClick={this.onClick.bind(this)} ref="self">
         <input
-          accept={accept}
-          multiple="multiple"
+          // accept={accept}
+          multiple={multiple}
           onChange={this.onInputChange.bind(this)}
           type="file"
           ref="inputFile"
