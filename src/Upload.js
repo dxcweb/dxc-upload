@@ -152,7 +152,7 @@ class Upload extends Component {
     return (
       <div {...other} onClick={this.onClick.bind(this)} ref="self">
         <input
-          // accept={accept}
+          accept={accept}
           multiple={multiple}
           onChange={this.onInputChange.bind(this)}
           type="file"
