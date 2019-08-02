@@ -1,25 +1,27 @@
 {
   "name": "dxc-upload",
   "version": "1.0.4",
+  "description": "upload",
   "config": {
-    "port": 8205
+    "port": 7201
   },
+  "main": "./lib",
   "scripts": {
     "build": "rc-tools run build",
     "start": "rc-tools run server",
-    "pub": "rc-tools run publish"
+    "css": "rc-tools run css",
+    "pub": "rc-tools run publish",
+    "dist": "rc-tools run compile && rc-tools run dist"
   },
   "devDependencies": {
-    "rc-tools": "^5.11.4",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "rc-tools": "^8.4.5",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   },
-  "dependencies": {},
   "files": [
     "assets",
     "examples",
     "lib",
     "src"
-  ],
-  "main": "./lib"
+  ]
 }
