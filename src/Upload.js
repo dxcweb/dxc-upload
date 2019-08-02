@@ -1,37 +1,36 @@
-import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
+import React from "react";
 import utils from "./utils";
-class Upload extends Component {
+class Upload extends React.PureComponent {
   static defaultProps = {
     paste: true, //是否支持粘贴
     drop: true, //是否支持拖拽
     domain: "document", //域 document或者self 指drop或paste在什么域上
     accept: "image/png,image/gif,image/jpeg", //允许上传文件格式
     multiple: false,
-    onError: msg => {
+    onError: (msg) => {
       console.error(msg);
     },
-    onChange: () => {}
+    onChange: () => {},
   };
 
   componentDidMount() {
     const { paste, drop, domain } = this.props;
     let dom = null;
-    if (domain == "document") {
+    if (domain === "document") {
       dom = document;
     } else {
       dom = this.refs.self;
     }
 
     if (drop) {
-      this.stopBrowserAction = e => {
+      this.stopBrowserAction = (e) => {
         e.stopPropagation();
         e.preventDefault();
       };
       //阻止浏览器默行为。
       document.addEventListener("dragover", this.stopBrowserAction);
       document.addEventListener("drop", this.stopBrowserAction);
-      this.dropEvent = e => {
+      this.dropEvent = (e) => {
         e.stopPropagation();
         e.preventDefault();
         this.drop(e);
@@ -40,7 +39,7 @@ class Upload extends Component {
       dom.addEventListener("drop", this.dropEvent);
     }
     if (paste) {
-      this.pasteEvent = e => {
+      this.pasteEvent = (e) => {
         this.paste(e);
       };
       dom.addEventListener("paste", this.pasteEvent);
@@ -49,9 +48,9 @@ class Upload extends Component {
 
   //组件移除前调用。
   componentWillUnmount() {
-    const { paste, drop, domain } = this.props;
+    const { domain } = this.props;
     let dom = null;
-    if (domain == "document") {
+    if (domain === "document") {
       dom = document;
     } else {
       dom = this.refs.self;
@@ -64,7 +63,7 @@ class Upload extends Component {
 
   //过滤
   filter(file) {
-    const { accept, onError } = this.props;
+    const { accept } = this.props;
     if (!accept || accept === "") {
       return true;
     }
@@ -80,7 +79,7 @@ class Upload extends Component {
 
   //拖拽
   drop(e) {
-    const fileList = event.dataTransfer.files;
+    const fileList = e.dataTransfer.files;
     if (!fileList || !fileList.length) return;
     const files = [];
     for (let i = 0, item; (item = fileList[i]); i++) {
@@ -89,7 +88,7 @@ class Upload extends Component {
       }
     }
     const { onChange, onError } = this.props;
-    if (files.length == 0) {
+    if (files.length === 0) {
       onError("文件类型错误!");
       return false;
     }
@@ -106,7 +105,7 @@ class Upload extends Component {
         }
       }
       const { onChange, onError } = this.props;
-      if (files.length == 0) {
+      if (files.length === 0) {
         onError("文件类型错误!");
         return false;
       }
@@ -119,36 +118,27 @@ class Upload extends Component {
   }
 
   onInputChange(e) {
-    var file = e.target.files[0];
-    if (file == null) {
+    const files = e.target.files;
+    if (!files || files.length === 0) {
       return false;
     }
-    const files = [];
-    if (this.filter(file)) {
-      files.push(file);
+    const value = [];
+    for (let i = 0, file; (file = files[i]); i++) {
+      if (this.filter(file)) {
+        value.push(file);
+      }
     }
     const { onChange, onError } = this.props;
-    if (files.length <= 0) {
+    if (value.length === 0) {
       onError("文件类型错误!");
       return false;
     }
     this.refs.inputFile.value = "";
-    onChange(files);
+    onChange(value);
   }
 
   render() {
-    const {
-      children,
-      onClick,
-      paste,
-      drop,
-      domain,
-      accept,
-      onError,
-      onChange,
-      multiple,
-      ...other
-    } = this.props;
+    const { children, onClick, paste, drop, domain, accept, onError, onChange, multiple, ...other } = this.props;
     return (
       <div {...other} onClick={this.onClick.bind(this)} ref="self">
         <input

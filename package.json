@@ -1,6 +1,6 @@
 {
   "name": "dxc-upload",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "config": {
     "port": 8205
   },
@@ -14,9 +14,7 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2"
   },
-  "dependencies": {
-    "bluebird": "^3.5.0"
-  },
+  "dependencies": {},
   "files": [
     "assets",
     "examples",
